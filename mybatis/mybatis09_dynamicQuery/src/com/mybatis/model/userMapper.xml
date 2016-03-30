@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间用于查找 -->
+<mapper namespace="com.mybatis.model.userMapper">
+
+	<!-- 查询名字里面有a的且年龄在20~25之间的用户 -->
+	<select id="getUserList" parameterType="QueryCondition" resultType="User">
+		select * from user where 
+		<if test="likeCondition!='%null%'">
+			name like #{likeCondition} and 
+		</if>
+		age between #{min} and #{max}
+	</select>
+</mapper>

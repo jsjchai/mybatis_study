@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间用于查找 -->
+<mapper namespace="com.mybatis.model.userMapper">
+
+	<!-- 调用存储过程 -->
+	<select id="count" parameterMap="countMap" statementType="CALLABLE">
+		CALL mybatisdb.get_user_count(?,?)
+	</select>
+	<parameterMap type="java.util.Map" id="countMap">
+		<parameter property="checked" mode="IN" jdbcType="INTEGER" />
+		<parameter property="countByAddress" mode="OUT" jdbcType="INTEGER"/>
+	</parameterMap>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间用于查找 -->
+<mapper namespace="com.mybatis.model.empMapper">
+
+	<!-- 根据id查询用户 -->
+	<select id="getById" parameterType="int" resultType="Emp" resultMap="_emp">
+		<!-- 第一种方法 -->
+		<!-- select eno id,ename name,sal from emp where eno=#{id} -->
+		select * from emp where eno=#{id}
+	</select>
+	
+	<!-- 字段名与属性名匹配 -->
+	<resultMap type="Emp" id="_emp">
+		<id column="eno" property="id"/>
+		<result column="ename" property="name"/>
+	</resultMap>
+	
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间用于查找 -->
+<mapper namespace="com.mybatis.model.baseMapper">
+
+	<!-- 
+		方式一：嵌套结果：使用嵌套结果映射来处理重复的联合结果的子集
+       	 封装联表查询的数据(去除重复的数据)
+	-->
+	<select id="getByWife" parameterType="int" resultMap="OnetoOne">
+		select * from husband h, wife w where h.wifeId=w.w_id and h.wifeId=#{id}
+	</select>
+	
+	<resultMap type="Husband" id="OnetoOne">
+		<id column="h_id" property="id"/>
+		<result column="h_name" property="name"/>
+		<association property="wife" javaType="Wife" >
+			<id column="w_id" property="id"/>
+			<result column="w_name" property="name"/>
+			<association property="husband" javaType="Husband">
+				<id column="h_id" property="id"/>
+				<result column="h_name" property="name"/>
+			</association>
+		</association>
+	</resultMap>
+	
+	<!-- 
+		方式二：嵌套查询：通过执行另外一个SQL映射语句来返回预期的复杂类型
+	-->
+
+	<select id="getHusband" parameterType="int" resultMap="OnetoOne2">
+		select * from husband where h_id=#{id}
+	</select>
+	<select id="getWife" parameterType="int" resultType="Wife">
+		select w_id id,w_name name,husbandId from wife where w_id=#{id}
+	</select>
+	<resultMap type="Husband" id="OnetoOne2">
+		<id column="h_id" property="id"/>
+		<result column="h_name" property="name"/>
+		<association property="wife" column="wifeId" select="getWife">
+			
+		</association>
+	</resultMap>
+</mapper>

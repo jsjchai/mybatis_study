@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间用于查找 -->
+<mapper namespace="com.mybatis.model.baseMapper">
+
+	
+	<select id="getTopic" parameterType="int" resultMap="OneToMany">
+		select * from topic where t_id=#{id}
+	</select>
+	<select id="getReply"  resultType="Reply">
+		select r_id as id,r_content as content from reply where topicId=#{id}
+	</select>
+	<resultMap type="Topic" id="OneToMany">
+		<id column="t_id" property="id"/>
+		<result column="t_content" property="content"/>
+		<!-- ofType="" 指定集合中对象类型  -->
+		<collection property="replies" column="t_id" select="getReply"></collection>	
+	</resultMap>
+</mapper>
